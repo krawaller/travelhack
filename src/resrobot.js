@@ -31,14 +31,53 @@ widget = window.widget || {};
 					console.log('meepmepp', data);
 				}
 			});
+		},
+		
+		getTravelPlannerLink: function(o) {
+			var base = "http://reseplanerare.resrobot.se/bin/query.exe/sn?", 
+			
+				defaults = {
+					"L": "vs_resrobot",
+					"OK": "",
+					"queryPageDisplayed": "yes",
+					"REQ0JourneyStopsS0A": "255",
+					"REQ0JourneyStopsZ0A": "255",
+					
+				},
+				remap = {
+					time: "REQ0JourneyTime",
+					date: "REQ0JourneyDate",
+					from: "REQ0JourneyStopsS0G",
+					to: "REQ0JourneyStopsZ0G",
+					arrival: "REQ0HafasSearchForw"
+				};
+
+			o = o || {};
+			Object.keys(remap).forEach(function(key){
+				if(o[key]){
+					o[remap[key]] = o[key];
+					delete o[key];
+				}
+			});
+			
+			var url = base + $.param($.extend({}, defaults, o));
+			console.log(url);
 		}
+
 	};
 
 })();
-
+//console.log('ä')
 // http://query.yahooapis.com/v1/public/yql?callback=jQuery16407802069026511163_1318094046654&q=apiVersion%3D2.1%26searchType%3DF%26coordSys%3DWGS84%26key%3D43ab60775d10bd2402be064ec2941375%26a%3D1&format=json&diagnostics=false&_=1318094046657
 
 widget.resrobot.defaults.key = "43ab60775d10bd2402be064ec2941375";
+widget.resrobot.getTravelPlannerLink({
+	from: "Göteborg Central",
+	to: "Stockholm central",
+	time: "13:34",
+	date: "2011-10-12",
+	arrival: true
+});
 /*widget.resrobot.searchTrip({
 	fromId: "7400001",
 	toId: "7400002",
