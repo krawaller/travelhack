@@ -87,3 +87,28 @@ widget.resrobot.getTravelPlannerLink({
 	walkSpeed: "",
 	coordSys: "WGS84"
 });*/
+
+function calculateGreatCircleDistance(A, B, decimals){
+	var A_lat, B_lat, d_lon, degrees_to_radians, d, factor,
+	    degrees_to_radians = Math.PI / 180;
+	    A_lat = A[0] * degrees_to_radians;
+	    B_lat = B[0] * degrees_to_radians;
+	    d_lon = Math.abs((B[1] || 0) - (A[1] || 0)) * degrees_to_radians;
+	
+	d = 6372.8 * Math.atan2(Math.sqrt(Math.pow(Math.cos(B_lat) * Math.sin(d_lon), 2.0) + Math.pow(Math.cos(A_lat) * Math.sin(B_lat) - Math.sin(A_lat) * Math.cos(B_lat) * Math.cos(d_lon), 2.0)), Math.sin(A_lat) * Math.sin(B_lat) + Math.cos(A_lat) * Math.cos(B_lat) * Math.cos(d_lon))
+	factor = Math.pow(10, decimals || 1);
+	return Math.round(d * factor) / factor;
+}
+
+function arrayify(arg){ return Array.isArray(arg) ? arg : arg ? [arg] : [];}
+
+arrayify(rr.query.results.timetableresult.ttitem).forEach(function(item){
+	arrayify(item.segment).forEach(function(segment){
+		var from = segment.departure.location,
+			to = segment.arrival.location;
+			
+		var d = calculateGreatCircleDistance([from.y, from.x], [to.y, to.x]);
+		console.log(d);
+		
+	});
+});
