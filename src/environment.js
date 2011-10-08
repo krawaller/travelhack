@@ -1,4 +1,4 @@
-(window.widget || {}).environment = {
+(window.widget = window.widget || {}).environment = {
 	/**
 	 * vehicle can be 'TRAIN', '
 	 * distance is in kilometers
@@ -6,6 +6,6 @@
 	 * data from Victoriainstitutet: http://www.trafiklab.se/api/emissionquantity
 	 */
 	calculateEmission: function(vehicle,distance){
-		return {tram:0.00084,train:0.00230,bus:75.80000,carmetan:76.00000,caretanol:91.00000,cardiesel:164.60000,carpetrol:194.00000}[vehicle]*distance;
+		return {tram:0.00084,train:0.00230,bus:75.80000,carmetan:76.00000,caretanol:91.00000,cardiesel:164.60000,carpetrol:194.00000,unknown:-1,walk:0}[vehicle]*distance;
 	}
 };
