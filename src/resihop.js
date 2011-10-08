@@ -1,29 +1,47 @@
-(function(){
+(function($){
 	ensureArray = function(arg){ return Array.isArray(arg) ? arg : arg ? [arg] : [];}
+	widget = window.widget || {}
 	widget.resihop = {
 		searchTrip: function(from,to,when,callback){
 			url = "http://resihop.nu/search?from=FROM&to=TO&when=WHEN"
-				.replace("FROM",encodeURIComponent(from))
-				.replace("TO",encodeURIComponent(to))
-				.replace("WHEN",encodeURIComponent(when));
-			console.log(url);
-			console.log(encodeURIComponent(url));
+			.replace("FROM",encodeURIComponent(from))
+			.replace("TO",encodeURIComponent(to))
+			.replace("WHEN",encodeURIComponent(when));
 			yql = "http://query.yahooapis.com/v1/public/yql?"+
-						"q=select%20*%20from%20xml%20where%20url%3D%22"+
-						encodeURIComponent(url)+
-						"%22&format=json&callback=?"
+					"q=select%20*%20from%20xml%20where%20url%3D%22"+
+					encodeURIComponent(url)+
+					"%22&format=json&callback=?";
 			console.log(yql);
-			$.getJSON(yql,
-				function(data){
-					trips = data.query.results.root.content.trips
-					result = ensureArray(trips && trips.trip);
-					console.log(result);
-				}
-			);
+			$.getJSON(yql,function(data){
+				trips = data.query.results.root.content.trips
+				result = ensureArray(trips && trips.trip);
+				callback(result);
+			});
 		},
-		postTrip: function(from,to,when,gotcar,name,email,phone,details){
-		
+		postTrip: function(from,to,when,got_car,name,email,phone,details,callback){
+			url = "http://dev.resihop.nu/addtrip?from=FROM&to=TO&when=WHEN&got_car=GOT_CAR&name=NAME&email=EMAIL&phone=PHONE&details=DETAILS"
+			.replace("FROM",encodeURIComponent(from))
+			.replace("TO",encodeURIComponent(to))
+			.replace("WHEN",encodeURIComponent(when))
+			.replace("GOT_CAR",encodeURIComponent(got_car))
+			.replace("NAME",encodeURIComponent(name))
+			.replace("PHONE",encodeURIComponent(phone))
+			.replace("EMAIL",encodeURIComponent(email))
+			.replace("DETAILS",encodeURIComponent(details));
+			yql = "http://query.yahooapis.com/v1/public/yql?"+
+					"q=select%20*%20from%20xml%20where%20url%3D%22"+
+					encodeURIComponent(url)+
+					"%22&format=json&callback=?";
+			$.getJSON(yql,function(data){
+				root = data.query.results.root;
+				if (root.content && root.content.new_trip){
+					result = {ok:true, code:root.content.new_trip.code};
+				} else {
+					result = ensureArray(root.meta.errors)[0];
+				}
+				callback(result);
+			});
 		}
 	};
 
-})();
+})(jQuery);
