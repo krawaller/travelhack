@@ -35,6 +35,7 @@
 		 * if failed, the object has an error prop with an error object
 		 */
 		postTrip: function(from,to,when,got_car,name,email,phone,details,callback){
+			// TODO - change URL from dev when done! :)
 			url = "http://dev.resihop.nu/addtrip?from=FROM&to=TO&when=WHEN&got_car=GOT_CAR&name=NAME&email=EMAIL&phone=PHONE&details=DETAILS"
 			.replace("FROM",encodeURIComponent(from))
 			.replace("TO",encodeURIComponent(to))
