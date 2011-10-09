@@ -95,6 +95,7 @@
 		printJourneyInstructions: printJourneyInstructions,
 		printStepInstruction: printStepInstruction,
 		getOverview: getOverview,
-		getLink: getLink
+		getLink: getLink,
+		getHtmlLink: getHtmlLink
 	};
 })(jQuery);
