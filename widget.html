@@ -2,49 +2,55 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Sample GUI</title>
-
 <script type="text/javascript" src="lib/jquery-1.6.4.min.js"></script>
 <script type="text/javascript" src="lib/jquery-ui-1.8.16.custom.min.js"></script>
 <!--script type="text/javascript" src="http://j.maxmind.com/app/geoip.js"></script-->
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-
 <script type="text/javascript" src="lib/tmpl.js"></script>
 <script type="text/javascript" src="src/environment.js"></script>
 <script type="text/javascript" src="src/resrobot.js"></script>
-<!--script type="text/javascript" src="tmp/rr.js"></script-->
-
+<script type="text/javascript" src="src/resihop.js"></script>
+<script type="text/javascript" src="tmp/rr.js"></script>
+<script type="text/javascript" src="tmp/ri.js"></script>
 <script type="text/tmpl" id="resrobot-tmpl">
 	<table>
 		<% $.makeArray(query.results.timetableresult.ttitem).forEach(function(item){ %>
-				<tr><td><%= getResRobotDepartureTime(item) %></td></td><%= item.co2 %> kg</td><td><%= getResrobotTripDuration(item) %></td></tr>
+				<tr><td><%= getResRobotDepartureTime(item) %></td><td><%= item.co2 %> kg</td><td><%= getResrobotTripDuration(item) %></td></tr>
+		<% }); %>
+	</table>
+</script>
+<script type="text/tmpl" id="resihop-tmpl">
+	<p>Hittade <strong><%= trips.length %></strong> potentiella samåkningar, varav <strong><%= getResihopNumberOfDrivers(trips) %></strong> förare och <strong><%= getResihopNumberOfLifters(trips) %></strong> liftare</p>
+	<table>
+		<% trips.forEach(function(trip){ %>
+				<tr><td><%= trip.details %></td></tr>
 		<% }); %>
 	</table>
 </script>
 <script type="text/javascript" src="src/widget.js"></script>
-
-
 <!--scriptt type="text/javascript" src="src/lastfmjs"></script>
 <scriptt type="text/javascript" src="src/resihop.js"></script>
 <scriptt type="text/javascript" src="src/resrobot.js"></script-->
 
+<link rel="stylesheet" type="text/css" href="lib/jquery-ui-css/ui-lightness/jquery-ui-1.8.16.custom.css">
+<link rel="stylesheet" href="lib/bootstrap.min.css">
 
 <style type="text/Css">
-
+.row {
+	margin-left: 0;
+}
 ul.fancypants {
 list-style-type: none;
 margin: 0;
 padding: 0;
 }
-
 ul.fancypants li {
   margin: 0;
   padding: 0;
 }
-
 ul.fancypants ol, ul.fancypants li {
   list-style-type: decimal !important;
 }
-
 .fancypants li  {
 display: block;
 margin: 2px 0;
@@ -52,111 +58,117 @@ padding: 5px 3px;
 border: 1px solid #888;
 background-color: #eee;
 }
-
-
 </style>
-<link rel="stylesheet" type="text/css" href="lib/jquery-ui-css/ui-lightness/jquery-ui-1.8.16.custom.css">
-
 </head>
 
 <body>
-
+<div class="row">
+	<div id="resihop-result" class="span4"></div>
+	<div id="resrobot-result" class="span4"></div>
+</div>
 <form action="#" onsubmit="return false">
-
-<div style="float:left;margin:1em;;">
-<p>Evenemang:<br>
-<b>YEAH</b></p>
-
-<p>Min adress:<br>
-<input type="text" name="position" class="inputitem" onkeyup="bajs"></p>
-
-<p>Avresa:<br>
-<input type="text" name="startdate" id="startdate" value=""></p>
-
-<p>Hemresa:<br>
-<input type="text" name="enddate" id="enddate" value=""></p>
-
-<p><input type="button" value="Visa resväg"></p>
-
-</div>
-
-<div id="googlemap" style="width:500px;height:300px;float:left;margin:1em"></div>
-
-<div class="twocol" style="clear:both; width:900px">
-
-<div style="width:45%;float:left;margin:0;padding-right:5%">
-<p>Resa med kollektivtrafik</p>
-
-<ul class="fancypants">
-<li>Swebus [3 h 30 min, 80 g CO<sub>2</sub>]
-<li>Tåg [8 h, 0,2 g CO<sub>2</sub>]
-<li>Buss [4 h 0 min, 100 g CO<sub>2</sub>]
-<li>Swebus [3 h 30 min, 80 g CO<sub>2</sub>]
-<li>Tåg [8 h, 0,2 g CO<sub>2</sub>]
-<li>Buss [4 h 0 min, 100 g CO<sub>2</sub>]
-<li>Swebus [3 h 30 min, 80 g CO<sub>2</sub>]
-<li>Tåg [8 h, 0,2 g CO<sub>2</sub>]
-<li>Buss [4 h 0 min, 100 g CO<sub>2</sub>]
-</ul>
-</div>
-
-
-<div style="width:49%;float:left;margin:0">
-<p>Resa med bil</p>
-
-<ul class="fancypants">
-<li>Samåk: David Waller [4 h 20 min, 1030 g CO<sub>2</sub>]
-<li>Samåk: Jacob Waller [4 h 10 min, 1050 g CO<sub>2</sub>]
-<li>Samåk: Aalex [3 h 50 min, 2400 g CO<sub>2</sub>]
-<li>
-
-<div class="accordion head">Lägg till samåkning</div>
-<div class="accordion"><ul>
-<li><p>Namn:<br>
-<input type="telefonnummer"></p>
-
-<p>Telefonnummer:<br>
-<input type="telefonnummer"></p>
-
-<p>Epostadress (visas ej):<br>
-<input type="text" name="mejladress"></p>
-
-<input type="submit">
-<p>(i samarbete med resihop.nu)</p>
-
-</ul></div>
-</ul>
-
-<p>Körinstrktioner</p>
-
-<ol><li>Kör E6
-<li>Kör inte E6
-<li>Profit
-</ol>
-
-
-</div>
-</div>
-
+	<div style="float:left;margin:1em;;">
+		<p>
+			Evenemang:<br>
+			<b>YEAH</b>
+		</p>
+		<p>
+			Min adress:<br>
+			<input type="text" name="position" class="inputitem" onkeyup="bajs">
+		</p>
+		<p>
+			Avresa:<br>
+			<input type="text" name="startdate" id="startdate" value="">
+		</p>
+		<p>
+			Hemresa:<br>
+			<input type="text" name="enddate" id="enddate" value="">
+		</p>
+		<p>
+			<input type="button" class="btn primary" value="Visa resväg">
+		</p>
+	</div>
+	<div id="googlemap" style="width:500px;height:300px;float:left;margin:1em">
+	</div>
+	<div class="twocol" style="clear:both; width:900px">
+		<div style="width:45%;float:left;margin:0;padding-right:5%">
+			<p>
+				Resa med kollektivtrafik
+			</p>
+			<ul class="fancypants">
+				<li>Swebus [3 h 30 min, 80 g CO<sub>2</sub>]
+				<li>Tåg [8 h, 0,2 g CO<sub>2</sub>]
+				<li>Buss [4 h 0 min, 100 g CO<sub>2</sub>]
+				<li>Swebus [3 h 30 min, 80 g CO<sub>2</sub>]
+				<li>Tåg [8 h, 0,2 g CO<sub>2</sub>]
+				<li>Buss [4 h 0 min, 100 g CO<sub>2</sub>]
+				<li>Swebus [3 h 30 min, 80 g CO<sub>2</sub>]
+				<li>Tåg [8 h, 0,2 g CO<sub>2</sub>]
+				<li>Buss [4 h 0 min, 100 g CO<sub>2</sub>]
+			</ul>
+		</div>
+		<div style="width:49%;float:left;margin:0">
+			<p>
+				Resa med bil
+			</p>
+			<ul class="fancypants">
+				<li>Samåk: David Waller [4 h 20 min, 1030 g CO<sub>2</sub>]
+				<li>Samåk: Jacob Waller [4 h 10 min, 1050 g CO<sub>2</sub>]
+				<li>Samåk: Aalex [3 h 50 min, 2400 g CO<sub>2</sub>]
+				<li>
+				<div class="accordion head">
+					Lägg till samåkning
+				</div>
+				<div class="accordion">
+					<ul>
+						<li>
+						<p>
+							Namn:<br>
+							<input type="telefonnummer">
+						</p>
+						<p>
+							Telefonnummer:<br>
+							<input type="telefonnummer">
+						</p>
+						<p>
+							Epostadress (visas ej):<br>
+							<input type="text" name="mejladress">
+						</p>
+						<input type="submit" class="btn success" value="Resihop, tack">
+						<p>
+							(i samarbete med resihop.nu)
+						</p>
+					</ul>
+				</div>
+			</ul>
+			<p>
+				Körinstrktioner
+			</p>
+			<ol>
+				<li>Kör E6
+				<li>Kör inte E6
+				<li>Profit
+			</ol>
+		</div>
+	</div>
 </form>
-
-
 <script>
 d1 = $('#startdate');
 d2 = $('#enddate');
 d1.datepicker({dateFormat: 'yy-mm-dd'});
 d2.datepicker({dateFormat: 'yy-mm-dd'});
-
-
 jQuery(document).ready(function(){
 	$('.accordion .head').click(function() {
 		$(this).next().toggle('slow');
 		return false;
 	}).next().hide();
 });
-
 </script>
-
-
+<script>
+widget.update({
+	//lat: geoip_latitude(),
+	//lng: geoip_longitude()
+});
+</script>
 </body>
 </html>

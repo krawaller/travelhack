@@ -22,8 +22,8 @@
 				first = segments && segments[0],
 				last = segments && segments[segments.length - 1];
 			
-			var startingAt = parseResRobotDate(first.departure.datetime),
-				endingAt = parseResRobotDate(last.arrival.datetime),
+			var startingAt = new Date(first.departure.datetime),
+				endingAt = new Date(last.arrival.datetime),
 				duration = (endingAt.getTime() - startingAt.getTime())/(60 * 1000),
 				
 				h = Math.floor(duration / 60),
@@ -52,11 +52,23 @@
 				last = segments && segments[segments.length - 1];
 			
 			return last.arrival.location.name;
+		},
+		
+		getResihopNumberOfDrivers: function(trips){
+			return trips.filter(function(trip){
+				return trip.got_car === "1";
+			}).length;
+		},
+		
+		getResihopNumberOfLifters: function(trips){
+			return trips.filter(function(trip){
+				return trip.got_car !== "1";
+			}).length;
 		}
 	};
 	
 	// Get templates
-	$('script[type="text/tmpl"]').each(function(){
+	/*$('script[type="text/tmpl"]').each(function(){
 		var $this = $(this),
 			name = $this.attr('id').replace(/-tmpl$/, ''),
 			tmpl = $this.html().trim();
@@ -66,7 +78,7 @@
 		
 		//var res = $.tmpl(name, { hello: "world" });
 		//console.log(res);
-	});
+	});*/
 	
 	//$.template( "movieTemplate", markup );
 	
@@ -77,12 +89,15 @@
 		console.log(data);
 		
 		var res = $.tmpl("resrobot-tmpl", data);
-		console.log(res);
+		console.log('rr', res);
+		$('#resrobot-result').html(res);
+		
+		//ri
+		var res = $.tmpl("resihop-tmpl", { trips: $.makeArray(ri.query.results.root.content.trips.trip) });
+		console.log('ri', res);
+		$('#resihop-result').html(res);
 	};
 	
-	widget.update({
-		//lat: geoip_latitude(),
-		//lng: geoip_longitude()
-	});
+	
 
 })();
