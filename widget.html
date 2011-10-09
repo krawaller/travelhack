@@ -8,27 +8,25 @@
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript" src="lib/tmpl.js"></script>
 <script type="text/javascript" src="src/environment.js"></script>
+<script type="text/javascript" src="src/directions.js"></script>
 <script type="text/javascript" src="src/resrobot.js"></script>
 <script type="text/javascript" src="src/resihop.js"></script>
 <script type="text/javascript" src="tmp/rr.js"></script>
 <script type="text/javascript" src="tmp/ri.js"></script>
+<script type="text/javascript" src="tmp/directions.js"></script>
 <script type="text/tmpl" id="resrobot-tmpl">
 	<% var overview = getOverview(trips); %>
-	<p>Restid <strong><%= formatDuration(overview.duration) %></strong></p>
-	<p>Co2 <strong><%= formatCo2(overview.co2) %></strong></p>
-	<table>
-		<% trips.forEach(function(item){ %>
-				<tr><td><%= getResRobotDepartureTime(item) %></td><td><%= formatCo2(item.co2) %></td><td><%= formatDuration(getResrobotTripDuration(item)) %></td></tr>
-		<% }); %>
-	</table>
+	<a href="<%= getTravelPlannerLink(trips) %>">
+		<p>Anslutning <strong><%= overview.title %></strong></p>
+		<p>Restid <strong><%= formatDuration(overview.duration) %></strong></p>
+		<p>Co2 <strong><%= formatCo2(overview.co2) %></strong> per person</p>
+	</a>
 </script>
 <script type="text/tmpl" id="resihop-tmpl">
-	<p>Hittade <strong><%= trips.length %></strong> potentiella samåkningar, varav <strong><%= getResihopNumberOfDrivers(trips) %></strong> förare och <strong><%= getResihopNumberOfLifters(trips) %></strong> liftare</p>
-	<table>
-		<% trips.forEach(function(trip){ %>
-				<tr><td><%= trip.details %></td></tr>
-		<% }); %>
-	</table>
+	<p>Samåkning <strong><%= getResihopNumberOfDrivers(trips) %></strong> förare och <strong><%= getResihopNumberOfLifters(trips) %></strong> liftare</p>
+	<% var overview = widget.directions.getOverview(directions.journey); %>
+	<p>Restid <strong><%= formatDuration(overview.duration) %></strong></p>
+	<p>Co2 <strong><%= formatCo2(overview.co2) %></strong> per bil</p>
 </script>
 <script type="text/javascript" src="src/widget.js"></script>
 <!--scriptt type="text/javascript" src="src/lastfmjs"></script>

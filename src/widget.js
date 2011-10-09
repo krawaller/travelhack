@@ -101,20 +101,21 @@
 		
 		var data = rr;
 		widget.resrobot.augmentTripsWithCo2(data);
-		var trips = data.query.results.timetableresult.ttitem;
-		var overview = widget.resrobot.getOverview(trips);
-		console.log(overview);
-		
-		//console.log(data);
-		
+				
 		var res = $.tmpl("resrobot-tmpl", { trips: $.makeArray(data.query.results.timetableresult.ttitem) });
-		//console.log('rr', res);
 		$('#resrobot-result').html(res);
 		
 		//ri
 		var res = $.tmpl("resihop-tmpl", { trips: $.makeArray(ri.query.results.root.content.trips.trip) });
-		//console.log('ri', res);
 		$('#resihop-result').html(res);
+	};
+	
+	widget.getDate = function(){
+		return '2011-10-16';
+	};
+	
+	widget.getTime = function(){
+		return '19:00';
 	};
 	
 	

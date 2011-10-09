@@ -15,6 +15,10 @@
 		return n < 10 ? '0' + n : n;
 	}
 	
+	function falsy(v){
+		return !!v;
+	}
+	
 	widget.resrobot = {
 		defaults: {
 			apiVersion: 2.1,
@@ -38,8 +42,18 @@
 			});
 		},
 		
-		getTravelPlannerLink: function(o) {
+		getTravelPlannerLink: function(trips) {
 			//http://reseplanerare.resrobot.se/bin/query.exe/sn?&start=1&S=7400001&Z=7400002&Time=13:37&Date=2011-10-13&Timesel=arrive
+			var item = widget.resrobot.getBestTrip(trips),
+				segments = $.makeArray(item.segment),
+				first = segments && segments[0],
+				last = segments && segments[segments.length - 1],
+				o = {
+					from: first.departure.location.id,
+					to: last.arrival.location.id,
+					date: widget.getDate(),
+					time: widget.getTime()
+				}
 			
 			var base = "http://reseplanerare.resrobot.se/bin/query.exe/sn?", 			
 				defaults = {
@@ -85,24 +99,7 @@
 					sum += co2;
 				});
 
-				console.log('total', sum);
 				item.co2 = sum;
-				//return total;
-				
-				/*total = sum * nonLinearFactor / 1000; // co2 in kg
-				if(total > 1){
-					n = 0;
-					while(Math.ceil(total / Math.pow(10, ++n)) !== 1 && n < 10);
-					f = Math.pow(10, 2 - n);
-					total = Math.round(total * f) / f;
-				} else {
-					n = 0;
-					while(Math.floor(total * Math.pow(10, ++n)) === 0 && n < 10);
-					f = Math.pow(10, n + 1);
-					total = Math.round(total * f) / f;
-				}
-				
-				item.co2 = total;*/
 			});
 		},
 		
@@ -126,7 +123,10 @@
 			var best = widget.resrobot.getBestTrip(trips);
 			return {
 				duration: widget.resrobot.getTripDuration(best),
-				co2: best.co2
+				co2: best.co2,
+				title: $.makeArray(best.segment).map(function(segment){
+					return segment.segmentid.carrier && [segment.segmentid.carrier.name, segment.segmentid.carrier.number].filter(falsy).join(" ")
+				}).filter(falsy).join(", ")
 			}
 		},
 		
