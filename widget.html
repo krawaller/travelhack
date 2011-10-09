@@ -5,13 +5,27 @@
 
 <script type="text/javascript" src="lib/jquery-1.6.4.min.js"></script>
 <script type="text/javascript" src="lib/jquery-ui-1.8.16.custom.min.js"></script>
-<script type="text/javascript" src="http://j.maxmind.com/app/geoip.js"></script>
+<!--script type="text/javascript" src="http://j.maxmind.com/app/geoip.js"></script-->
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 
+<script type="text/javascript" src="lib/tmpl.js"></script>
+<script type="text/javascript" src="src/environment.js"></script>
+<script type="text/javascript" src="src/resrobot.js"></script>
+<!--script type="text/javascript" src="tmp/rr.js"></script-->
+
+<script type="text/tmpl" id="resrobot-tmpl">
+	<table>
+		<% $.makeArray(query.results.timetableresult.ttitem).forEach(function(item){ %>
+				<tr><td><%= getResRobotDepartureTime(item) %></td></td><%= item.co2 %> kg</td><td><%= getResrobotTripDuration(item) %></td></tr>
+		<% }); %>
+	</table>
+</script>
 <script type="text/javascript" src="src/widget.js"></script>
-<scriptt type="text/javascript" src="src/lastfmjs"></script>
+
+
+<!--scriptt type="text/javascript" src="src/lastfmjs"></script>
 <scriptt type="text/javascript" src="src/resihop.js"></script>
-<scriptt type="text/javascript" src="src/resrobot.js"></script>
+<scriptt type="text/javascript" src="src/resrobot.js"></script-->
 
 
 <style type="text/Css">

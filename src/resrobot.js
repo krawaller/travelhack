@@ -8,7 +8,7 @@
 // http://query.yahooapis.com/v1/public/yql?q=&format=json&diagnostics=true&callback=cbfunc
 
 (function(){
-	var widget = window.widget || {};
+	var widget = window.widget = window.widget || {};
 	ensureArray = function(arg){ return Array.isArray(arg) ? arg : arg ? [arg] : [];};
 	
 	widget.resrobot = {
@@ -68,7 +68,8 @@
 		augmentTripsWithCo2: function(data){
 			ensureArray(data.query.results.timetableresult.ttitem).forEach(function(item){
 				var sum = 0,
-					unknown = false;
+					unknown = false,
+					total, n, f;
 
 				ensureArray(item.segment).forEach(function(segment){
 					var from = segment.departure.location,
@@ -84,7 +85,20 @@
 					sum += co2;
 				});
 
-				item.co2 = sum * nonLinearFactor / 1000; // co2 in kg
+				total = sum * nonLinearFactor / 1000; // co2 in kg
+				if(total > 1){
+					n = 0;
+					while(Math.ceil(total / Math.pow(10, ++n)) !== 1 && n < 10);
+					f = Math.pow(10, 2 - n);
+					total = Math.round(total * f) / f;
+				} else {
+					n = 0;
+					while(Math.floor(total * Math.pow(10, ++n)) === 0 && n < 10);
+					f = Math.pow(10, n + 1);
+					total = Math.round(total * f) / f;
+				}
+				
+				item.co2 = total;
 			});
 		}
 

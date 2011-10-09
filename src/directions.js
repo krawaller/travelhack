@@ -1,4 +1,4 @@
-(window.widget || {}).directions = {
+(window.widget = window.widget || {}).directions = {
 	/**
 	 * callback is called with resultobject. if successful, status prop is OK
 	 * journeyinfo is collected in routes.legs

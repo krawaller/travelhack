@@ -1,5 +1,5 @@
 (function(){
-	var widget = window.widget || {};
+	var widget = window.widget = window.widget || {};
 	
 	widget.map = {
 		initialize: function(){

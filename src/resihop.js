@@ -1,6 +1,6 @@
 (function($){
 	ensureArray = function(arg){ return Array.isArray(arg) ? arg : arg ? [arg] : [];}
-	widget = window.widget || {}
+	var widget = window.widget = window.widget || {};
 	widget.resihop = {
 		/**
 		 * from and to are adresses in strings
