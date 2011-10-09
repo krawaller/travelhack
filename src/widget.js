@@ -1,5 +1,7 @@
-// Main namespace
+var WHEN = '2011-10-16',
+	TO = new google.maps.LatLng(55.4298, 13.8201);
 
+// Main namespace
 (function(){
 	var widget = window.widget = window.widget || {};
 	
@@ -97,6 +99,22 @@
 	
 	//$.template( "movieTemplate", markup );
 	
+	
+	var geocoder = new google.maps.Geocoder();
+	geocoder.geocode({
+			latLng: new google.maps.LatLng(57.7167, 11.9667),
+		},
+		function(results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+				if (results[0]) {
+					$('#from').val(results[0].formatted_address);
+				}
+			} else {
+				alert("Geocoder failed due to: " + status);
+			}
+		}
+	);
+	
 	widget.update = function(opts){
 		
 		var data = rr;
@@ -108,6 +126,10 @@
 		//ri
 		var res = $.tmpl("resihop-tmpl", { trips: $.makeArray(ri.query.results.root.content.trips.trip) });
 		$('#resihop-result').html(res);
+		
+		if(!$('#from').val()){
+			
+		}
 	};
 	
 	widget.getDate = function(){

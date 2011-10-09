@@ -5,6 +5,18 @@
 <script type="text/javascript" src="lib/jquery-1.6.4.min.js"></script>
 <script type="text/javascript" src="lib/jquery-ui-1.8.16.custom.min.js"></script>
 <!--script type="text/javascript" src="http://j.maxmind.com/app/geoip.js"></script-->
+<script>
+	function geoip_country_code() { return 'SE'; }
+	function geoip_country_name() { return 'Sweden'; }
+	function geoip_city()         { return 'Gothenburg'; }
+	function geoip_region()       { return '28'; }
+	function geoip_region_name()  { return 'Vastra Gotaland'; }
+	function geoip_latitude()     { return '57.7167'; }
+	function geoip_longitude()    { return '11.9667'; }
+	function geoip_postal_code()  { return ''; }
+	function geoip_area_code()    { return ''; }
+	function geoip_metro_code()   { return ''; }
+</script>
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript" src="lib/tmpl.js"></script>
 <script type="text/javascript" src="src/environment.js"></script>
@@ -60,6 +72,13 @@ border: 1px solid #888;
 background-color: #eee;
 }
 
+#map {
+	min-height: 200px;
+	margin: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
+
 .transport-header {
 	min-height: 64px;
 	text-indent: -9999px;
@@ -77,7 +96,27 @@ background-color: #eee;
 </head>
 
 <body>
-<div class="row">
+	<div class="row">
+		<form class="span7">
+			<fieldset>
+				<legend>Wee</legend>
+				<div class="clearfix">
+					<label for="from">Från</label>
+					<div class="input">
+						<input class="" id="from" name="from" type="text">
+					</div>
+				</div>
+				<div class="clearfix">
+					<label for="from">Avresa</label>
+					<div class="input">
+						<input class="" id="when" name="when" type="text" value="2011-10-16">
+					</div>
+				</div>
+			</fieldset>
+		</form>
+		<div id="map" class="span7"></div>
+	</div>
+<div class="row">	
 	<div class="resrobot span7">
 		<h2 class="transport-header car">Bil</h2>
 		<div id="resihop-result" class=""></div>
@@ -189,6 +228,19 @@ jQuery(document).ready(function(){
 });
 </script>
 <script>
+$('#when').datepicker({dateFormat: 'yy-mm-dd'});
+var myOptions = {
+	zoom: 8,
+	center: new google.maps.LatLng(geoip_latitude(), geoip_longitude()),
+	mapTypeId: google.maps.MapTypeId.ROADMAP
+};
+
+var map = new google.maps.Map(document.getElementById('map'), myOptions);
+
+directionsService = new google.maps.DirectionsService();
+directionsDisplay = new google.maps.DirectionsRenderer();
+directionsDisplay.setMap(map);
+
 widget.update({
 	//lat: geoip_latitude(),
 	//lng: geoip_longitude()
