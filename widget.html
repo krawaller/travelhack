@@ -36,6 +36,15 @@ margin: 0;
 padding: 0;
 }
 
+ul.fancypants li {
+  margin: 0;
+  padding: 0;
+}
+
+ul.fancypants ol, ul.fancypants li {
+  list-style-type: decimal !important;
+}
+
 .fancypants li  {
 display: block;
 margin: 2px 0;
@@ -58,7 +67,7 @@ background-color: #eee;
 <p>Evenemang:<br>
 <b>YEAH</b></p>
 
-<p>Avfärd från:<br>
+<p>Min adress:<br>
 <input type="text" name="position" class="inputitem" onkeyup="bajs"></p>
 
 <p>Avresa:<br>
@@ -67,41 +76,43 @@ background-color: #eee;
 <p>Hemresa:<br>
 <input type="text" name="enddate" id="enddate" value=""></p>
 
+<p><input type="button" value="Visa resväg"></p>
+
 </div>
 
-<div id="googlemap" style="width:300px;height:300px;float:left;margin:1em"></div>
+<div id="googlemap" style="width:500px;height:300px;float:left;margin:1em"></div>
 
-<div class="twocol" style="clear:both; width:600px">
+<div class="twocol" style="clear:both; width:900px">
 
 <div style="width:45%;float:left;margin:0;padding-right:5%">
 <p>Resa med kollektivtrafik</p>
 
 <ul class="fancypants">
-<li>Buss
-<li>Buss
-<li>Tåg
-<li>Mormors moped
+<li>Swebus [3 h 30 min, 80 g CO<sub>2</sub>]
+<li>Tåg [8 h, 0,2 g CO<sub>2</sub>]
+<li>Buss [4 h 0 min, 100 g CO<sub>2</sub>]
+<li>Swebus [3 h 30 min, 80 g CO<sub>2</sub>]
+<li>Tåg [8 h, 0,2 g CO<sub>2</sub>]
+<li>Buss [4 h 0 min, 100 g CO<sub>2</sub>]
+<li>Swebus [3 h 30 min, 80 g CO<sub>2</sub>]
+<li>Tåg [8 h, 0,2 g CO<sub>2</sub>]
+<li>Buss [4 h 0 min, 100 g CO<sub>2</sub>]
 </ul>
-
-
 </div>
+
 
 <div style="width:49%;float:left;margin:0">
 <p>Resa med bil</p>
 
-<p>Totalt 34 km som tar 3.4 timmar och släpper ut tuuuuuusen gram CO<sub>2</sub>.</p>
-
-<p>Det finns <strong>&pi;</strong> samåkningsmöjligheter:</p>
-
 <ul class="fancypants">
-<li>David
-<li>Jacob
-<li>Aalex
-</ul>
+<li>Samåk: David Waller [4 h 20 min, 1030 g CO<sub>2</sub>]
+<li>Samåk: Jacob Waller [4 h 10 min, 1050 g CO<sub>2</sub>]
+<li>Samåk: Aalex [3 h 50 min, 2400 g CO<sub>2</sub>]
+<li>
 
-<p>Låt andra samåka med dig! Fyll i formuläret nedan:</p>
-
-<p>Namn:<br>
+<div class="accordion head">Lägg till samåkning</div>
+<div class="accordion"><ul>
+<li><p>Namn:<br>
 <input type="telefonnummer"></p>
 
 <p>Telefonnummer:<br>
@@ -110,13 +121,22 @@ background-color: #eee;
 <p>Epostadress (visas ej):<br>
 <input type="text" name="mejladress"></p>
 
+<input type="submit">
 <p>(i samarbete med resihop.nu)</p>
 
-</div>
+</ul></div>
+</ul>
+
+<p>Körinstrktioner</p>
+
+<ol><li>Kör E6
+<li>Kör inte E6
+<li>Profit
+</ol>
+
 
 </div>
-
-
+</div>
 
 </form>
 
@@ -126,6 +146,15 @@ d1 = $('#startdate');
 d2 = $('#enddate');
 d1.datepicker({dateFormat: 'yy-mm-dd'});
 d2.datepicker({dateFormat: 'yy-mm-dd'});
+
+
+jQuery(document).ready(function(){
+	$('.accordion .head').click(function() {
+		$(this).next().toggle('slow');
+		return false;
+	}).next().hide();
+});
+
 </script>
 
 
