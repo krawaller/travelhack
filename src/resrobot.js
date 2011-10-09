@@ -27,6 +27,20 @@
 		},
 		searchTrip: function(o, callback){
 			
+			//https://api.trafiklab.se/samtrafiken/resrobot/Search.xml?&
+			var o = {
+				key: "43ab60775d10bd2402be064ec2941375",
+				date: "2011-10-08",
+				time: "16:00",
+				walkSpeed: "",
+				fromY: FROM.lat,
+				fromX: FROM.lng,
+				from: FROM.name,
+				toY: TO.lat,
+				toX: TO.lng,
+				to: TO.name
+			};
+			
 			$.ajax({
 				dataType: "jsonp",
 				url: "http://query.yahooapis.com/v1/public/yql",
@@ -37,7 +51,7 @@
 				},
 				success: function(data){
 					widget.resrobot.augmentTripsWithCo2(data);
-					console.log('meepmepp', data);
+					callback({ trips: $.makeArray(data.query.results.timetableresult.ttitem) });
 				}
 			});
 		},

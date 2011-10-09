@@ -118,6 +118,13 @@ var WHEN = '2011-10-16',
 	
 	widget.update = function(opts){
 		
+		
+		
+		/*widget.resrobot.searchTrip(o, function(trips){
+			var res = $.tmpl("resrobot-tmpl", { trips: trips });
+			$('#resrobot-result').html(res);
+		});*/
+		
 		var data = rr;
 		widget.resrobot.augmentTripsWithCo2(data);
 				
