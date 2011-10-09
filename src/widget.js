@@ -18,18 +18,7 @@
 	
 	$.tmpl.utils = {
 		getResrobotTripDuration: function(item){
-			var segments = $.makeArray(item.segment),
-				first = segments && segments[0],
-				last = segments && segments[segments.length - 1];
-			
-			var startingAt = new Date(first.departure.datetime),
-				endingAt = new Date(last.arrival.datetime),
-				duration = (endingAt.getTime() - startingAt.getTime())/(60 * 1000),
-				
-				h = Math.floor(duration / 60),
-				m = (duration % 60);
-			
-			return  (h) + 'h ' + padSingleDigits(m) + 'm';
+			return widget.resrobot.getTripDuration(item);
 		},
 		
 		getResRobotDepartureTime: function(item){
@@ -64,6 +53,32 @@
 			return trips.filter(function(trip){
 				return trip.got_car !== "1";
 			}).length;
+		},
+		
+		formatDuration: function(duration){
+			var h = Math.floor(duration / 60),
+				m = (duration % 60);
+
+			return  (h) + 'h ' + padSingleDigits(m) + 'm';
+		},
+		
+		formatCo2: function(co2grams){
+			var nonLinearFactor = 1.2,
+				total = co2grams * nonLinearFactor / 1000; // co2 in kg
+				
+			if(total > 1){
+				n = 0;
+				while(Math.ceil(total / Math.pow(10, ++n)) !== 1 && n < 10);
+				f = Math.pow(10, 2 - n);
+				total = Math.round(total * f) / f;
+			} else {
+				n = 0;
+				while(Math.floor(total * Math.pow(10, ++n)) === 0 && n < 10);
+				f = Math.pow(10, n + 1);
+				total = Math.round(total * f) / f;
+			}
+			
+			return total + ' kg';
 		}
 	};
 	
@@ -86,15 +101,19 @@
 		
 		var data = rr;
 		widget.resrobot.augmentTripsWithCo2(data);
-		console.log(data);
+		var trips = data.query.results.timetableresult.ttitem;
+		var overview = widget.resrobot.getOverview(trips);
+		console.log(overview);
 		
-		var res = $.tmpl("resrobot-tmpl", data);
-		console.log('rr', res);
+		//console.log(data);
+		
+		var res = $.tmpl("resrobot-tmpl", { trips: $.makeArray(data.query.results.timetableresult.ttitem) });
+		//console.log('rr', res);
 		$('#resrobot-result').html(res);
 		
 		//ri
 		var res = $.tmpl("resihop-tmpl", { trips: $.makeArray(ri.query.results.root.content.trips.trip) });
-		console.log('ri', res);
+		//console.log('ri', res);
 		$('#resihop-result').html(res);
 	};
 	

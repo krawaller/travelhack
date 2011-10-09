@@ -11,6 +11,10 @@
 	var widget = window.widget = window.widget || {};
 	ensureArray = function(arg){ return Array.isArray(arg) ? arg : arg ? [arg] : [];};
 	
+	function padSingleDigits(n){
+		return n < 10 ? '0' + n : n;
+	}
+	
 	widget.resrobot = {
 		defaults: {
 			apiVersion: 2.1,
@@ -35,34 +39,30 @@
 		},
 		
 		getTravelPlannerLink: function(o) {
-			var base = "http://reseplanerare.resrobot.se/bin/query.exe/sn?", 
+			//http://reseplanerare.resrobot.se/bin/query.exe/sn?&start=1&S=7400001&Z=7400002&Time=13:37&Date=2011-10-13&Timesel=arrive
 			
+			var base = "http://reseplanerare.resrobot.se/bin/query.exe/sn?", 			
 				defaults = {
-					"L": "vs_resrobot",
-					"OK": "",
-					"queryPageDisplayed": "yes",
-					"REQ0JourneyStopsS0A": "255",
-					"REQ0JourneyStopsZ0A": "255",
-					
+					"start": "1",
+					"Timesel": "arrive"
 				},
 				remap = {
-					time: "REQ0JourneyTime",
-					date: "REQ0JourneyDate",
-					from: "REQ0JourneyStopsS0G",
-					to: "REQ0JourneyStopsZ0G",
-					arrival: "REQ0HafasSearchForw"
+					time: "Time",
+					date: "Date",
+					from: "S",
+					to: "Z"
 				};
 
 			o = o || {};
 			Object.keys(remap).forEach(function(key){
-				if(o[key]){
+				if(typeof o[key] !== "undefined"){
 					o[remap[key]] = o[key];
 					delete o[key];
 				}
 			});
 			
 			var url = base + $.param($.extend({}, defaults, o));
-			console.log(url);
+			return url;
 		},
 		
 		augmentTripsWithCo2: function(data){
@@ -85,7 +85,11 @@
 					sum += co2;
 				});
 
-				total = sum * nonLinearFactor / 1000; // co2 in kg
+				console.log('total', sum);
+				item.co2 = sum;
+				//return total;
+				
+				/*total = sum * nonLinearFactor / 1000; // co2 in kg
 				if(total > 1){
 					n = 0;
 					while(Math.ceil(total / Math.pow(10, ++n)) !== 1 && n < 10);
@@ -98,8 +102,48 @@
 					total = Math.round(total * f) / f;
 				}
 				
-				item.co2 = total;
+				item.co2 = total;*/
 			});
+		},
+		
+		getTripDuration: function(item, asMinutes){
+			var segments = $.makeArray(item.segment),
+				first = segments && segments[0],
+				last = segments && segments[segments.length - 1];
+			
+			var startingAt = new Date(first.departure.datetime),
+				endingAt = new Date(last.arrival.datetime),
+				duration = (endingAt.getTime() - startingAt.getTime())/(60 * 1000),
+				
+				h = Math.floor(duration / 60),
+				m = (duration % 60);
+			
+			return duration;
+			//return  asMinutes ? duration : (h) + 'h ' + padSingleDigits(m) + 'm';
+		},
+		
+		getOverview: function(trips){
+			var best = widget.resrobot.getBestTrip(trips);
+			return {
+				duration: widget.resrobot.getTripDuration(best),
+				co2: best.co2
+			}
+		},
+		
+		getBestTrip: function(trips){
+			
+			var arr = $.makeArray(trips).map(function(trip){
+				var duration = widget.resrobot.getTripDuration(trip, true);
+				return [duration, trip.co2, trip];
+			});
+			
+			arr.sort();
+			
+			var results = arr.map(function(a){
+				return a[2];
+			});
+			
+			return results && results[0];
 		}
 
 	};
