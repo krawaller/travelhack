@@ -28,17 +28,18 @@
 <script type="text/javascript" src="tmp/directions.js"></script>
 <script type="text/tmpl" id="resrobot-tmpl">
 	<% var overview = getOverview(trips); %>
-	<a href="<%= getTravelPlannerLink(trips) %>">
-		<p>Anslutning <strong><%= overview.title %></strong></p>
-		<p>Restid <strong><%= formatDuration(overview.duration) %></strong></p>
-		<p>Co2 <strong><%= formatCo2(overview.co2) %></strong> per person</p>
-	</a>
+	<p>Anslutning <strong><%= overview.title %></strong></p>
+	<p>Restid <strong><%= formatDuration(overview.duration) %></strong></p>
+	<p>Co2 <strong><%= formatCo2(overview.co2) %></strong> per person</p>
+	<a class="btn success" href="<%= getTravelPlannerLink(trips) %>">Se detaljer</a>
 </script>
 <script type="text/tmpl" id="resihop-tmpl">
-	<p>Samåkning <strong><%= getResihopNumberOfDrivers(trips) %></strong> förare och <strong><%= getResihopNumberOfLifters(trips) %></strong> liftare</p>
+	<p>Samåkning <strong><%= getResihopNumberOfDrivers(trips) %></strong> förare och <strong><%= getResihopNumberOfLifters(trips) %></strong> liftare </p>
 	<% var overview = widget.directions.getOverview(directions.journey); %>
 	<p>Restid <strong><%= formatDuration(overview.duration) %></strong></p>
 	<p>Co2 <strong><%= formatCo2(overview.co2) %></strong> per bil</p>
+	<a id="resihopButton" class="btn success" href="#" onClick="widget.resihop.goTo()">Se samåkning</a>
+	<a id="resihopButton" class="btn primary" href="#" onClick="widget.resihop.goTo()">Se vägbeskrivning</a>
 </script>
 <script type="text/javascript" src="src/widget.js"></script>
 <!--scriptt type="text/javascript" src="src/lastfmjs"></script>
@@ -92,14 +93,18 @@ background-color: #eee;
 .car {
 	background: url(images/car.png) center center no-repeat;
 }
+.wrapper {
+	margin: 0 auto;
+}
 </style>
 </head>
 
 <body>
+<div class="wrapper">
 	<div class="row">
 		<form class="span7">
 			<fieldset>
-				<legend>Wee</legend>
+				<legend>Ystad korvfestival</legend>
 				<div class="clearfix">
 					<label for="from">Från</label>
 					<div class="input">
@@ -116,117 +121,19 @@ background-color: #eee;
 		</form>
 		<div id="map" class="span7"></div>
 	</div>
-<div class="row">	
-	<div class="resrobot span7">
-		<h2 class="transport-header car">Bil</h2>
-		<div id="resihop-result" class=""></div>
-	</div>
-	<div class="resihop span7">
-		<h2 class="transport-header publictransport">Kollektivt</h2>
-		<div id="resrobot-result" class=""></div>
-	</div>
+	<div class="row">	
+		<div class="resrobot span7">
+			<h2 class="transport-header car">Bil</h2>
+			<div id="resihop-result" class=""></div>
+		</div>
+		<div class="resihop span7">
+			<h2 class="transport-header publictransport">Kollektivt</h2>
+			<div id="resrobot-result" class=""></div>
+		</div>
 
+	</div>
 </div>
 
-
-<form action="#" onsubmit="return false">
-	<div style="float:left;margin:1em;;">
-		<p>
-			Evenemang:<br>
-			<b>YEAH</b>
-		</p>
-		<p>
-			Min adress:<br>
-			<input type="text" name="position" class="inputitem" onkeyup="bajs">
-		</p>
-		<p>
-			Avresa:<br>
-			<input type="text" name="startdate" id="startdate" value="">
-		</p>
-		<p>
-			Hemresa:<br>
-			<input type="text" name="enddate" id="enddate" value="">
-		</p>
-		<p>
-			<input type="button" class="btn primary" value="Visa resväg">
-		</p>
-	</div>
-	<div id="googlemap" style="width:500px;height:300px;float:left;margin:1em">
-	</div>
-	<div class="twocol" style="clear:both; width:900px">
-		<div style="width:45%;float:left;margin:0;padding-right:5%">
-			<p>
-				Resa med kollektivtrafik
-			</p>
-			<ul class="fancypants">
-				<li>Swebus [3 h 30 min, 80 g CO<sub>2</sub>]
-				<li>Tåg [8 h, 0,2 g CO<sub>2</sub>]
-				<li>Buss [4 h 0 min, 100 g CO<sub>2</sub>]
-				<li>Swebus [3 h 30 min, 80 g CO<sub>2</sub>]
-				<li>Tåg [8 h, 0,2 g CO<sub>2</sub>]
-				<li>Buss [4 h 0 min, 100 g CO<sub>2</sub>]
-				<li>Swebus [3 h 30 min, 80 g CO<sub>2</sub>]
-				<li>Tåg [8 h, 0,2 g CO<sub>2</sub>]
-				<li>Buss [4 h 0 min, 100 g CO<sub>2</sub>]
-			</ul>
-		</div>
-		<div style="width:49%;float:left;margin:0">
-			<p>
-				Resa med bil
-			</p>
-			<ul class="fancypants">
-				<li>Samåk: David Waller [4 h 20 min, 1030 g CO<sub>2</sub>]
-				<li>Samåk: Jacob Waller [4 h 10 min, 1050 g CO<sub>2</sub>]
-				<li>Samåk: Aalex [3 h 50 min, 2400 g CO<sub>2</sub>]
-				<li>
-				<div class="accordion head">
-					Lägg till samåkning
-				</div>
-				<div class="accordion">
-					<ul>
-						<li>
-						<p>
-							Namn:<br>
-							<input type="telefonnummer">
-						</p>
-						<p>
-							Telefonnummer:<br>
-							<input type="telefonnummer">
-						</p>
-						<p>
-							Epostadress (visas ej):<br>
-							<input type="text" name="mejladress">
-						</p>
-						<input type="submit" class="btn success" value="Resihop, tack">
-						<p>
-							(i samarbete med resihop.nu)
-						</p>
-					</ul>
-				</div>
-			</ul>
-			<p>
-				Körinstrktioner
-			</p>
-			<ol>
-				<li>Kör E6
-				<li>Kör inte E6
-				<li>Profit
-			</ol>
-		</div>
-	</div>
-</form>
-<script>
-d1 = $('#startdate');
-d2 = $('#enddate');
-d1.datepicker({dateFormat: 'yy-mm-dd'});
-d2.datepicker({dateFormat: 'yy-mm-dd'});
-jQuery(document).ready(function(){
-	$('.accordion .head').click(function() {
-		$(this).next().toggle('slow');
-		return false;
-	}).next().hide();
-});
-</script>
 <script>
 $('#when').datepicker({dateFormat: 'yy-mm-dd'});
 var myOptions = {

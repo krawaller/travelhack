@@ -20,8 +20,16 @@
 		});
 	}
 	
-	function getLink(from,to,when){
+	function getLink(){
+		var from = widget.getFromName(),
+			to = widget.getToName(),
+			when = widget.getDate();
+			
 		return "http://dev.resihop.nu/search?from=FROM&to=TO&when=WHEN".replace("FROM",encodeURIComponent(from+", Sweden")).replace("TO",encodeURIComponent(to)).replace("WHEN",encodeURIComponent(when));
+	}
+	
+	function goTo(){
+		window.location = widget.resihop.getLink();
 	}
 	
 	/**
@@ -64,7 +72,8 @@
 	window.widget.resihop = {
 		searchTrip: searchTrip,
 		getLink: getLink,
-		postTrip: postTrip
+		postTrip: postTrip,
+		goTo: goTo
 	}
 
 

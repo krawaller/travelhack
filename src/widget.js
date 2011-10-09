@@ -1,4 +1,5 @@
 var WHEN = '2011-10-16',
+	TO_NAME = 'Ystad korvfestival',
 	TO = new google.maps.LatLng(55.4298, 13.8201);
 
 // Main namespace
@@ -130,6 +131,14 @@ var WHEN = '2011-10-16',
 		if(!$('#from').val()){
 			
 		}
+	};
+	
+	widget.getFromName = function(){
+		return $('#from').val();
+	};
+	
+	widget.getToName = function(){
+		return TO_NAME;
 	};
 	
 	widget.getDate = function(){
