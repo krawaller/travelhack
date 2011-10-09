@@ -85,24 +85,7 @@
 					sum += co2;
 				});
 
-				console.log('total', sum);
 				item.co2 = sum;
-				//return total;
-				
-				/*total = sum * nonLinearFactor / 1000; // co2 in kg
-				if(total > 1){
-					n = 0;
-					while(Math.ceil(total / Math.pow(10, ++n)) !== 1 && n < 10);
-					f = Math.pow(10, 2 - n);
-					total = Math.round(total * f) / f;
-				} else {
-					n = 0;
-					while(Math.floor(total * Math.pow(10, ++n)) === 0 && n < 10);
-					f = Math.pow(10, n + 1);
-					total = Math.round(total * f) / f;
-				}
-				
-				item.co2 = total;*/
 			});
 		},
 		

@@ -62,14 +62,15 @@
 	
 	function getOverview(journey){
 		return {
-			time:journey.duration.value,
-			distance:journey.distance.value,
+			duration: Number(journey.duration.value)/60,
+			distance: Number(journey.distance.value),
 			co2: widget.environment.calculateEmission("carpetrol",journey.distance.value/1000)
 		}; // in meters and minutes
 	}
 	
 	// export
-	(window.widget || {}).directions = {
+	var widget = window.widget = window.widget || {};
+	widget.directions = {
 		getDrivingDirections: getDrivingDirections,
 		printJourneyInstructions: printJourneyInstructions,
 		printStepInstruction: printStepInstruction,
