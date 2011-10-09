@@ -1,60 +1,80 @@
-﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<title>Sample GUI</title>
-
-<script type="text/javascript" src="lib/jquery-1.6.4.min.js"></script>
-<script type="text/javascript" src="lib/jquery-ui-1.8.16.custom.min.js"></script>
-<script type="text/javascript" src="http://j.maxmind.com/app/geoip.js"></script>
-<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-
-<script type="text/javascript" src="src/widget.js"></script>
-<scriptt type="text/javascript" src="src/lastfmjs"></script>
-<scriptt type="text/javascript" src="src/resihop.js"></script>
-<scriptt type="text/javascript" src="src/resrobot.js"></script>
-
-<style type="text/Css">
-
-
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Inkastaren</title>
+	</head>
+	<body>
+<style type="text/css">
+	#logo, #desc {
+		float: left;
+	}
+	#desc {
+		width: 600px;
+	}
+	label {
+		width: 120px;
+		display: inline-block;
+		text-align: right;
+		margin-right: 0.5em;
+	}
+	#generate {
+		margin-left: 100px;
+		margin-top: 1em;
+	}
+	em {
+		text-decoration: underline;
+		font-style: normal;
+	}
+	#output {
+		display: block;
+		margin-top: 2em;
+		width: 600px;
+	}
 </style>
-<link rel="stylesheet" type="text/css" href="lib/jquery-ui-css/ui-lightness/jquery-ui-1.8.16.custom.css">
+		<img src="images/inkastaren.png" id="logo" />
+	<div id="desc">
+		<p>
+Välkommen till <strong>Inkastaren</strong>, tjänsten som superenkelt låter dig som eventarrangör <strong>generera en websida med färdvägsinstruktioner</strong>
+till dina besökare! Du behöver bara fylla i detaljerna nedan, trycka på generate, och <strong>inkludera
+den resulterande koden på din sida</strong>. 
+</p>
+<p>
+Den kommer då förvandlas till en sida som dynamiskt känner av besökarens position, och visar <em>körväg</em> + <em>kollektiva
+resvägar</em> + <em>samåkningsmöjligheter</em> till ditt event!
+</p>
+<p>
+	Inkastaren innebär därmed att..
+</p>
+<ul>
+	<li>du <strong>slipper ödsla tid</strong> på att skapa den obligatoriska HittaHit-sidan på ditt Events webbplats</li>
+	<li>användaren får direkt <strong>purfärska detaljer för olika färdsätt</strong>, utan att behöva söka informationen</li>
+	<li>i och med att Inkastaren dessutom uppmuntrar samåkande (och smyger in lite CO2-info) så <strong>bidrar du till ett grönare resande</strong>!</li>
+</ul>
 
-</head>
-
-<body>
-
-<form action="#" onsubmit="return false">
-
-<div style="float:left;margin:1em;;">
-<p>Evenemangsnamn:<br>
-<input type="text" name="eventtitle" class="inputitem" value="Phäst hos Aalex"></p>
-
-<p>Adress:<br>
-<input type="text" name="position" class="inputitem" onkeyup="bajs"></p>
-
-<p>Startdatum:<br>
-<input type="text" name="startdate" id="startdate" value=""></p>
-
-<p>Slutdatum:<br>
-<input type="text" name="enddate" id="enddate" value=""></p>
-
-<p>Kod att kopiera:<br>
-<input type="text" name="resultlink"></p>
+	<div id="input">
+		<label for="where">adress:</label><input type="text" id="where" value="Stävgatan 3, Ystad"/><br/>
+		<label for="when">när:</label><input type="text" id="when" value="2011-10-18" /><br/>
+		<label>titel:</label><input type="text" id="title" value="Ystads korvfestival" /><br/>
+		<label>extra info:</label><textarea id="info">Parkera ej intill allén, kajorna kommer defekera på era bilar!</textarea><br/>
+		<label>url till css-fil:</label><input type="text" id="css" /><br/>
+		<input type="button" value="generera url" id="generate" />
+		<input type=text id="output" /><a id="outputlink"/>
+	</div>
 </div>
-
-<div id="googlemap" style="width:300px;height:300px;float:left;margin:1em"></div>
-
-
-</form>
-
-
-<script>
-d1 = $('#startdate');
-d2 = $('#enddate');
-d1.datepicker({dateFormat: 'yy-mm-dd'});
-d2.datepicker({dateFormat: 'yy-mm-dd'});
-</script>
-
-
-</body>
+		<script type="text/javascript" src="lib/jquery-1.6.4.min.js"></script>
+		<script type="text/javascript">
+$("#generate").click(function(){
+	var params = $.param({
+		where: $("#where").val(),
+		when: $("#when").val(),
+		title: $("#title").val(),
+		info: $("#info").val(),
+		css: $("#css").val()
+	});
+	$("#output").val("<iframe src='http://inkastaren.se/widget?"+params+"'/>").focus().select();
+	$("#outputlink").text("länk").attr("href","widget.html?"+params);
+});
+		</script>
+	</body>
 </html>
