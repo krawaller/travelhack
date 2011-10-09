@@ -15,6 +15,10 @@
 		return n < 10 ? '0' + n : n;
 	}
 	
+	function falsy(v){
+		return !!v;
+	}
+	
 	widget.resrobot = {
 		defaults: {
 			apiVersion: 2.1,
@@ -109,7 +113,10 @@
 			var best = widget.resrobot.getBestTrip(trips);
 			return {
 				duration: widget.resrobot.getTripDuration(best),
-				co2: best.co2
+				co2: best.co2,
+				title: $.makeArray(best.segment).map(function(segment){
+					return segment.segmentid.carrier && [segment.segmentid.carrier.name, segment.segmentid.carrier.number].filter(falsy).join(" ")
+				}).filter(falsy).join(", ")
 			}
 		},
 		
