@@ -13,9 +13,12 @@
 <script type="text/javascript" src="tmp/rr.js"></script>
 <script type="text/javascript" src="tmp/ri.js"></script>
 <script type="text/tmpl" id="resrobot-tmpl">
+	<% var overview = getOverview(trips); %>
+	<p>Restid <strong><%= formatDuration(overview.duration) %></strong></p>
+	<p>Co2 <strong><%= formatCo2(overview.co2) %></strong></p>
 	<table>
-		<% $.makeArray(query.results.timetableresult.ttitem).forEach(function(item){ %>
-				<tr><td><%= getResRobotDepartureTime(item) %></td><td><%= item.co2 %> kg</td><td><%= getResrobotTripDuration(item) %></td></tr>
+		<% trips.forEach(function(item){ %>
+				<tr><td><%= getResRobotDepartureTime(item) %></td><td><%= formatCo2(item.co2) %></td><td><%= formatDuration(getResrobotTripDuration(item)) %></td></tr>
 		<% }); %>
 	</table>
 </script>
@@ -58,14 +61,37 @@ padding: 5px 3px;
 border: 1px solid #888;
 background-color: #eee;
 }
+
+.transport-header {
+	min-height: 64px;
+	text-indent: -9999px;
+	padding: 1em;
+}
+
+.publictransport {
+	background: url(images/train.png) center center no-repeat;
+
+}
+.car {
+	background: url(images/car.png) center center no-repeat;
+}
 </style>
 </head>
 
 <body>
 <div class="row">
-	<div id="resihop-result" class="span4"></div>
-	<div id="resrobot-result" class="span4"></div>
+	<div class="resrobot span7">
+		<h2 class="transport-header car">Bil</h2>
+		<div id="resihop-result" class=""></div>
+	</div>
+	<div class="resihop span7">
+		<h2 class="transport-header publictransport">Kollektivt</h2>
+		<div id="resrobot-result" class=""></div>
+	</div>
+
 </div>
+
+
 <form action="#" onsubmit="return false">
 	<div style="float:left;margin:1em;;">
 		<p>
