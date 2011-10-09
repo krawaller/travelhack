@@ -128,9 +128,18 @@ var WHEN = '2011-10-16',
 		var res = $.tmpl("resihop-tmpl", { trips: $.makeArray(ri.query.results.root.content.trips.trip) });
 		$('#resihop-result').html(res);
 		
-		if(!$('#from').val()){
-			
-		}
+		
+		var request = {
+			origin: new google.maps.LatLng(geoip_latitude(), geoip_longitude()),
+			destination: TO,
+			travelMode: google.maps.DirectionsTravelMode.DRIVING
+		};
+		directionsService.route(request, function(response, status) {
+			if (status == google.maps.DirectionsStatus.OK) {
+				console.log('dirs', response);
+				directionsDisplay.setDirections(response);
+			}
+		});
 	};
 	
 	widget.getFromName = function(){
