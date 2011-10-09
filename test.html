@@ -5,7 +5,8 @@
 	</head>
 	<body>
 		<input type="button" value="drive demo" id="drivedemo" />
-		<div id="output"/>
+		<div id="overview"></div>
+		<div id="output"></div>
 		<script type="text/javascript" src="lib/jquery-1.6.4.min.js"></script>
 		<script type="text/javascript" src="lib/weld.js"></script>
 		<script type="text/javascript" src="src/environment.js"></script>
@@ -15,7 +16,8 @@
 		<script type="text/javascript">
 $("#drivedemo").click(function(){
 	widget.directions.getDrivingDirections(-34.928690,138.599970,-35.217450,138.541250,function(data){
-		$("#output").html(widget.directions.printJourneyInstructions(data.journey));
+		$("#output").empty().append(widget.directions.printJourneyInstructions(data.journey));
+		$("#overview").empty().append($("<ul><li class='time'/><li class='distance'/><li class='co2'></ul>").weld(widget.directions.getOverview(data.journey)));
 	});
 });
 		</script>
