@@ -58,7 +58,8 @@
 				}
 				callback(result);
 			});
-		}
+		},
+		
 	};
 
 })(jQuery);

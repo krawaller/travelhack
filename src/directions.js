@@ -28,6 +28,19 @@
 			}
 			callback(res);
 		});
+		
+		var request = {
+			origin: new google.maps.LatLng(geoip_latitude(), geoip_longitude()),
+			destination: TO,
+			travelMode: google.maps.DirectionsTravelMode.DRIVING
+		};
+		directionsService.route(request, function(response, status) {
+			if (status == google.maps.DirectionsStatus.OK) {
+				console.log('dirs', response);
+				directionsDisplay.setDirections(response);
+			}
+		});
+
 	}
 	
 	/**
