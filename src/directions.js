@@ -61,7 +61,11 @@
 	}
 	
 	function getOverview(journey){
-		return {time:journey.duration.value,distance:journey.distance.value}; // in meters and minutes
+		return {
+			time:journey.duration.value,
+			distance:journey.distance.value,
+			co2: widget.environment.calculateEmission("carpetrol",journey.distance.value/1000)
+		}; // in meters and minutes
 	}
 	
 	// export
