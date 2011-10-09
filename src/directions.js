@@ -42,7 +42,7 @@
 		return "http://maps.googleapis.com/maps/api/directions/json?"+qs;
 	}
 
-	function getLink(startlat,startlong,stoplat,stoplong){
+	function getHtmlLink(startlat,startlong,stoplat,stoplong){
 		var qs = $.param({
 			saddr: startlat+","+startlong,
 			daddr: stoplat+","+stoplong
