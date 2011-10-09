@@ -48,7 +48,7 @@
 	function printStepInstruction(step,i){
 		var cells = ["stepnumber","instruction","duration","distance"], // change order here si tu veux! :)
 			data = {
-				stepnumber: i,
+				stepnumber: i+1,
 				instruction: step.html_instructions.replace(/<[^>]*>/g,""),
 				duration: step.duration.text,
 				distance: step.distance.text
