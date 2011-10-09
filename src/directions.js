@@ -12,8 +12,7 @@
 			language:"sv",
 			sensor:false
 		});
-		var base = "http://maps.googleapis.com/maps/api/directions/json?",
-			googurl = base+qs;
+		var googurl = getLink(startlat,startlong,stoplat,stoplong);
 		var yql = "http://query.yahooapis.com/v1/public/yql?"+
 			"q=select%20*%20from%20json%20where%20url%3D%22"+
 			encodeURIComponent(googurl)+
@@ -28,6 +27,17 @@
 			}
 			callback(res);
 		});
+	}
+	
+	function getLink(startlat,startlong,stoplat,stoplong){
+		var qs = $.param({
+			origin: startlat+","+startlong,
+			destination: stoplat+","+stoplong,
+			region:"sv",
+			language:"sv",
+			sensor:false
+		});
+		return "http://maps.googleapis.com/maps/api/directions/json?"+qs;
 	}
 	
 	/**
@@ -74,6 +84,7 @@
 		getDrivingDirections: getDrivingDirections,
 		printJourneyInstructions: printJourneyInstructions,
 		printStepInstruction: printStepInstruction,
-		getOverview: getOverview
+		getOverview: getOverview,
+		getLink: getLink
 	};
 })(jQuery);
