@@ -26,6 +26,7 @@
 <script type="text/javascript" src="tmp/rr.js"></script>
 <script type="text/javascript" src="tmp/ri.js"></script>
 <script type="text/javascript" src="tmp/directions.js"></script>
+<script type="text/javascript" src="lib/jquery.ba-bbq.min.js"></script>
 <script type="text/tmpl" id="resrobot-tmpl">
 	<% var overview = getOverview(trips); %>
 	<p>Anslutning <strong><%= overview.title %></strong></p>
@@ -41,6 +42,54 @@
 	<a id="resihopButton" class="btn success" href="#" onClick="widget.resihop.goTo()"><%= trips.length ? "Se " + trips.length + " samåkningsmöjligheter" : "Posta till Resihop" %></a>
 	<a id="resihopButton" class="btn success" href="#" onClick="widget.resihop.goTo()">Se vägbeskrivning</a>
 </script>
+
+<script type="text/tmpl" id="inkastaren-tmpl">
+<div class="container">
+
+	<h1><%= title %></h1>
+	<p><%= info %></p>
+	<div class="row well">
+		<form class="span7">
+			<fieldset>
+				<legend></legend>
+				<div class="clearfix">
+					<label for="from">Jag åker från</label>
+					<div class="input">
+						<input class="" id="from" name="from" type="text">
+					</div>
+				</div>
+				<div class="clearfix">
+					<label for="from">Datum</label>
+					<div class="input">
+						<input class="" id="when" name="when" type="text" value="<%= when %>">
+					</div>
+				</div>
+				<div class="clearfix">
+					<div class="input">
+						<input class="btn primary update-button" id="when" name="when" type="submit" value="Uppdatera">
+					</div>
+				</div>
+			</fieldset>
+		</form>
+		<div id="map" class="span7"></div>
+	</div>
+	<div class="row well">	
+		<h2>Mina resmöjligheter</h2>
+		<div class="resrobot span7">
+			<h2 class="transport-header car">Bil</h2>
+			<div id="resihop-result" class=""></div>
+		</div>
+		<div class="resihop span7">
+			<h2 class="transport-header publictransport">Kollektivt</h2>
+			<div id="resrobot-result" class=""></div>
+		</div>
+
+	</div>
+</div>
+</script>
+
+
+
 <script type="text/javascript" src="src/widget.js"></script>
 <!--scriptt type="text/javascript" src="src/lastfmjs"></script>
 <scriptt type="text/javascript" src="src/resihop.js"></script>
@@ -124,50 +173,13 @@ fieldset legend {
 </head>
 
 <body>
-<div class="container">
+<div id="inkastaren"></div>
 
-	<h1>En titel satt av arrangören!</h1>
-	<p>En infotext från arrangören, typ, parkera inte intill allén för då kommer kajorna att defekera på era bilar.</p>
-	<div class="row well">
-		<form class="span7">
-			<fieldset>
-				<legend></legend>
-				<div class="clearfix">
-					<label for="from">Jag åker från</label>
-					<div class="input">
-						<input class="" id="from" name="from" type="text">
-					</div>
-				</div>
-				<div class="clearfix">
-					<label for="from">Datum</label>
-					<div class="input">
-						<input class="" id="when" name="when" type="text" value="2011-10-16">
-					</div>
-				</div>
-				<div class="clearfix">
-					<div class="input">
-						<input class="btn primary update-button" id="when" name="when" type="submit" value="Uppdatera">
-					</div>
-				</div>
-			</fieldset>
-		</form>
-		<div id="map" class="span7"></div>
-	</div>
-	<div class="row well">	
-		<h2>Mina resmöjligheter</h2>
-		<div class="resrobot span7">
-			<h2 class="transport-header car">Bil</h2>
-			<div id="resihop-result" class=""></div>
-		</div>
-		<div class="resihop span7">
-			<h2 class="transport-header publictransport">Kollektivt</h2>
-			<div id="resrobot-result" class=""></div>
-		</div>
 
-	</div>
-</div>
 
 <script>
+var SETTINGS = $.deparam.querystring();
+$('#inkastaren').html($.tmpl('inkastaren-tmpl', SETTINGS));
 $('#when').datepicker({dateFormat: 'yy-mm-dd'});
 var myOptions = {
 	zoom: 8,
@@ -185,6 +197,7 @@ widget.update({
 	//lat: geoip_latitude(),
 	//lng: geoip_longitude()
 });
+
 </script>
 </body>
 </html>
