@@ -41,6 +41,14 @@
 		});
 		return "http://maps.googleapis.com/maps/api/directions/json?"+qs;
 	}
+
+	function getHtmlLink(startlat,startlong,stoplat,stoplong){
+		var qs = $.param({
+			saddr: startlat+","+startlong,
+			daddr: stoplat+","+stoplong
+		});
+		return "http://maps.google.se/maps?"+qs;
+	}
 	
 	/**
 	 * parameter is the journey prop from the journey data object. 

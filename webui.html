@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Inkastaren</title>
+	</head>
+	<body>
+		<p>
+Välkommen till Inkastaren, tjänsten som superenkelt låter dig som eventarrangör generera en websida med färdvägsinstruktioner
+till dina besökare! Du behöver bara fylla i detaljerna nedan, trycka på generate, och inkludera
+den resulterande koden på din sida. 
+</p>
+<p>
+Den kommer då förvandlas till en sida som dynamiskt känner av besökarens position, och visar körväg + kollektiva
+resvägar + samåkningsmöjligheter till ditt event!
+</p>
+<p>
+	Inkastaren innebär därmed att..
+</p>
+<ul>
+	<li>du slipper ödsla tid på att skapa den obligatoriska HittaHit-sidan på ditt Events webbplats</li>
+	<li>användaren får direkt purfärska detaljer för olika färdsätt, utan att behöva söka informationen</li>
+	<li>i och med att Inkastaren dessutom uppmuntrar samåkande (och smyger in lite CO2-info) så bidrar du till ett grönare resande!</li>
+</ul>
+		<hr/>
+		<p>adress</p>
+		<input type="text" id="where"/>
+		<p>när</p>
+		<input type="text" id="when" />
+		<p>titel</p>
+		<input type="text" id="title" />
+		<p>extra info</p>
+		<textarea id="info"></textarea>
+		<hr/>
+		<input type="button" value="generera url" id="generate" />
+		<p id="output" />
+		<script type="text/javascript" src="lib/jquery-1.6.4.min.js"></script>
+		<script type="text/javascript">
+$("#generate").click(function(){
+	$("#output").text($.param({
+		where: $("#where").val(),
+		when: $("#when").val(),
+		title: $("#title").val(),
+		info: $("#info").val()
+	}));
+});
+		</script>
+	</body>
+</html>
