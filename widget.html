@@ -16,9 +16,11 @@
 <script type="text/javascript" src="tmp/directions.js"></script>
 <script type="text/tmpl" id="resrobot-tmpl">
 	<% var overview = getOverview(trips); %>
-	<p>Anslutning <strong><%= overview.title %></strong></p>
-	<p>Restid <strong><%= formatDuration(overview.duration) %></strong></p>
-	<p>Co2 <strong><%= formatCo2(overview.co2) %></strong> per person</p>
+	<a href="<%= getTravelPlannerLink(trips) %>">
+		<p>Anslutning <strong><%= overview.title %></strong></p>
+		<p>Restid <strong><%= formatDuration(overview.duration) %></strong></p>
+		<p>Co2 <strong><%= formatCo2(overview.co2) %></strong> per person</p>
+	</a>
 </script>
 <script type="text/tmpl" id="resihop-tmpl">
 	<p>Samåkning <strong><%= getResihopNumberOfDrivers(trips) %></strong> förare och <strong><%= getResihopNumberOfLifters(trips) %></strong> liftare</p>

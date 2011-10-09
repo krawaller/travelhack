@@ -110,6 +110,14 @@
 		$('#resihop-result').html(res);
 	};
 	
+	widget.getDate = function(){
+		return '2011-10-16';
+	};
+	
+	widget.getTime = function(){
+		return '19:00';
+	};
+	
 	
 
 })();
