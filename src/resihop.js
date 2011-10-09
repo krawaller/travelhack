@@ -1,6 +1,6 @@
 (function($){
 	ensureArray = function(arg){ return Array.isArray(arg) ? arg : arg ? [arg] : [];}
-	widget = window.widget || {}
+	var widget = window.widget = window.widget || {};
 	widget.resihop = {
 		/**
 		 * from and to are adresses in strings
@@ -9,7 +9,7 @@
 		 * the result is an array of objects for all matching trips (so might be empty)
 		 */
 		searchTrip: function(from,to,when,callback){
-			url = "http://resihop.nu/search?from=FROM&to=TO&when=WHEN"
+			url = "http://dev.resihop.nu/search?from=FROM&to=TO&when=WHEN"
 			.replace("FROM",encodeURIComponent(from))
 			.replace("TO",encodeURIComponent(to))
 			.replace("WHEN",encodeURIComponent(when));

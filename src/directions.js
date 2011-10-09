@@ -1,4 +1,5 @@
 (function($){
+
 	/**
 	 * callback is called with resultobject. if successful, status prop is OK
 	 * and journey prop is populated
